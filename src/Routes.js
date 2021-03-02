@@ -9,7 +9,6 @@ import Payment from './Pages/Payment/Payment';
 import ProjectUpload from './Pages/ProjectUpload/ProjectUpload';
 import SignUp from './Pages/SignUp/SignUp';
 import Nav from './Components/Nav/Nav';
-import { Reset } from 'styled-reset';
 
 class Routes extends React.Component {
   render() {
