@@ -3,37 +3,14 @@ import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
 import { FaTimesCircle } from 'react-icons/fa';
 
-const SupportCard = () => {
-  const [card, setCard] = useState([
-    // 레이아웃 점검용 목데이터
-    {
-      id: 1,
-      people: 1123,
-      money: 1,
-      description: '강아지의 간식을 업그레이드 합니다.',
-    },
-    {
-      id: 2,
-      people: 2313,
-      money: 2,
-      description: '강아지의 옷을 업그레이드 합니다.',
-    },
-    {
-      id: 3,
-      people: 948,
-      money: 3,
-      description: '강아지의 집을 업그레이드 합니다.',
-    },
-  ]);
-
-  const [idx, setIdx] = useState(0);
+const SupportCard = ({ data }) => {
+  const [cardIdx, setCardIdx] = useState(0);
+  const [money, setMoney] = useState(0);
 
   const openAdditionalSupport = id => {
-    setIdx(id);
+    setCardIdx(id);
     setMoney(0);
   };
-
-  const [money, setMoney] = useState(0);
 
   const selectPlusSupport = e => {
     setMoney(money + Number(e.target.value));
@@ -43,11 +20,20 @@ const SupportCard = () => {
     setMoney(Number(e.target.value));
   };
 
+  const deleteSupportValue = () => {
+    setMoney(0);
+  };
+
+  const alertSupportRequest = () => {
+    alert(`${money.toLocaleString()}원 후원 신청이 완료되었습니다.`);
+    setCardIdx(0);
+  };
+
   return (
     <>
       <CardList>
         <div>선물 선택</div>
-        {card.map(support => {
+        {data.map(support => {
           return (
             <SupportAmount key={support.id} value={support.id}>
               <div onClick={() => openAdditionalSupport(support.id)}>
@@ -56,11 +42,11 @@ const SupportCard = () => {
                   <span>{support.people}</span>명이 선택
                 </div>
                 <div className="amount">
-                  <span>{support.money}</span>BTC +
+                  <span>{Number(support.money).toLocaleString()}</span>+
                 </div>
                 <div className="description">{support.description}</div>
               </div>
-              {idx === support.id && (
+              {cardIdx === support.id && (
                 <SupportApply>
                   <div className="midLine"></div>
                   <div>추가 후원금(선택)</div>
@@ -70,7 +56,7 @@ const SupportCard = () => {
                     value={money}
                     onChange={changeSupportValue}
                   />
-                  <DelBtn>
+                  <DelBtn onClick={deleteSupportValue}>
                     <FaTimesCircle size="18" />
                   </DelBtn>
                   <div className="applyInfo">
@@ -101,8 +87,13 @@ const SupportCard = () => {
                       </button>
                     </li>
                   </BtnList>
-                  <ApplyBtn>
-                    <span>{money ? money : support.money} </span>BTC 밀어주기
+                  <ApplyBtn onClick={alertSupportRequest}>
+                    <span>
+                      {money
+                        ? money.toLocaleString()
+                        : Number(support.money).toLocaleString()}
+                    </span>
+                    원 밀어주기
                   </ApplyBtn>
                 </SupportApply>
               )}

@@ -3,42 +3,46 @@ import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
 import { FaShareAlt } from 'react-icons/fa';
 
-const Detail = () => {
+const ProjectInfo = ({ data }) => {
+  const yyyy = data.payment_date.substr(0, 4);
+  const mm = data.payment_date.substr(5, 2);
+  const dd = data.payment_date.substr(8, 2);
+  const fundingDate = `${yyyy}년 ${mm}월 ${dd}일`;
+
   return (
     <>
       <ProjectIntroduction>
         <IntroductionHeader>
-          <span>애견</span>
-          <h1>지연님의 강아지라고요요요요요요요요요요요요요</h1>
-          <div>지연님 강아지</div>
+          <span>{data.category}</span>
+          <h1>{data.name}</h1>
+          <div>{data.creator}</div>
         </IntroductionHeader>
         <IntroductionMain>
           <div className="projectImg">
-            <img
-              alt="강아지"
-              src="https://images.velog.io/images/playck/post/cc595b00-733d-47ec-8b10-e0cec3e9c271/20200925_155128.jpg"
-            />
+            <img alt={data.name + 'image'} src={data.thumbnail_url} />
             <MainRight>
               <div className="projectInfo">
                 <div className="supportValue">
                   <div>모인 금액</div>
                   <div className="statusValue">
-                    <span>10,000,000</span>
+                    <span>{Number(data.total_amount).toLocaleString()}</span>
                     <span>원</span>
-                    <span className="supportStatus">2200%</span>
+                    <span className="supportStatus">
+                      {Math.round(data.achieved_rate)}%
+                    </span>
                   </div>
                 </div>
                 <div className="supportValue">
                   <div>남은 시간</div>
                   <div className="statusValue">
-                    <span>25</span>
+                    <span>{Math.abs(data.rest_date)}</span>
                     <span>일</span>
                   </div>
                 </div>
                 <div className="supportValue">
                   <div>후원자</div>
                   <div className="statusValue">
-                    <span>200,000</span>
+                    <span>{data.total_supporters.toLocaleString() || 0}</span>
                     <span>명</span>
                   </div>
                 </div>
@@ -46,8 +50,9 @@ const Detail = () => {
               <SupportCard>
                 <div>펀딩 진행중</div>
                 <p>
-                  목표 금액인 200BTC가 모여야만 결제됩니다. <br />
-                  결제는 2021년 3월 30일에 다함께 진행됩니다.
+                  목표 금액인 {Number(data.goal_amount).toLocaleString()}원이
+                  모여야만 결제됩니다. <br />
+                  결제는 {fundingDate}에 다함께 진행됩니다.
                 </p>
               </SupportCard>
               <SupportButton>
@@ -189,4 +194,4 @@ const SupportButton = styled.div`
   }
 `;
 
-export default Detail;
+export default ProjectInfo;
