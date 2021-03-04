@@ -57,6 +57,7 @@ const Navbar = styled.div`
   width: 100%;
   background-color: white;
   box-shadow: 0 6px 6px -4px lightgray;
+  z-index: 1000;
 `;
 
 const NavWrap = styled.div`
