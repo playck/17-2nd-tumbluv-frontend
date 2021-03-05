@@ -173,7 +173,7 @@ export default function SignUp({ history }) {
           .then(res => {
             console.log(res);
             alert('카카오 로그인 완료!');
-            localStorage.setItem('access_token', res.token);
+            localStorage.setItem('access_token', res.access_token);
             history.push('/');
           });
       },
