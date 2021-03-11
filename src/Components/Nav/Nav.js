@@ -6,6 +6,10 @@ import { FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Nav = () => {
+  const logout = () => {
+    localStorage.removeItem('access_token');
+    window.location.reload();
+  };
   return (
     <ThemeProvider theme={theme}>
       <Navbar>
@@ -23,14 +27,22 @@ const Nav = () => {
           </Link>
           <RightMenu>
             <FaSistrix size="25" />
-            <div>
-              <Link to="/login">
-                <span>로그인 / </span>
-              </Link>
-              <Link to="/signup">
-                <span>회원가입</span>
-              </Link>
-            </div>
+            {!localStorage.getItem('access_token') ? (
+              <div>
+                <Link to="/login">
+                  <span>로그인 / </span>
+                </Link>
+                <Link to="/signup">
+                  <span>회원가입</span>
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <Link to="/">
+                  <span onClick={() => logout()}>로그아웃</span>
+                </Link>
+              </div>
+            )}
             <FaUserCircle size="32" />
           </RightMenu>
         </NavWrap>
@@ -81,6 +93,7 @@ const RightMenu = styled.div`
   div {
     margin: 0 10px;
     span {
+      color: black;
       cursor: pointer;
     }
   }
