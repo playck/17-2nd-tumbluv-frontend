@@ -174,23 +174,19 @@ const FormBody = styled.li`
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 5px;
-
   .formContent {
     display: flex;
     flex-direction: column;
     padding: 14px 21px;
     border-bottom: 1px solid lightgray;
-
     label {
       padding: 7px 14px;
       font-size: 14px;
     }
-
     .inputContent {
       display: flex;
       align-items: center;
       height: 35px;
-
       p {
         width: 840px;
         padding: 15px 10px;
@@ -204,7 +200,6 @@ const FormBody = styled.li`
         cursor: pointer;
       }
     }
-
     input {
       width: 930px;
       margin-left: 10px;

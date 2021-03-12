@@ -1,0 +1,31 @@
+{
+  "creator_info": {
+    "creator_description": "애견마스터 박지연님입니다.",
+    "name": "사람2"
+  },
+  "project_info": {
+    "achieved_rate": 2200,
+    "category": "category1",
+    "creator": "사람2",
+    "goal_amount": "5000000.00",
+    "name": "프로젝트2",
+    "option": [],
+    "payment_date": "2021-04-02T00:00:00",
+    "rest_date": 20,
+    "thumbnail_url": "썸네일2",
+    "total_amount": 10000020,
+    "total_supporters": 10000020
+  },
+  "tab": {
+    "communities": [
+      {
+        "comment": "댓글",
+        "created_at": "2021-03-11T13:37:16.289",
+        "past_date": 0,
+        "recomment": "",
+        "user": "사람1"
+      }
+    ],
+    "story": "프로젝트 내용2"
+  }
+}

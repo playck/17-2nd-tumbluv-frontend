@@ -1,18 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ProjectStory = () => {
+const ProjectStory = ({ data }) => {
   return (
     <>
-      <ProjectContent>story</ProjectContent>
+      <StoryContent dangerouslySetInnerHTML={{ __html: data }}></StoryContent>
     </>
   );
 };
 
-const ProjectContent = styled.div`
+const StoryContent = styled.div`
   width: 648px;
-  height: 1000px;
-  background-color: yellowgreen;
+  background-color: white;
+  img {
+    width: 300px;
+    height: 300px;
+  }
 `;
 
 export default ProjectStory;

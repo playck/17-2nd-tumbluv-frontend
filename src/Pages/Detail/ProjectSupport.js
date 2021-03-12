@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaEnvelope } from 'react-icons/fa';
 
-const ProjectSupport = () => {
+const ProjectSupport = ({ data }) => {
   return (
     <>
       <CreatorInfo>
@@ -13,9 +13,9 @@ const ProjectSupport = () => {
               alt="logo"
               src="https://media.vlpt.us/images/playck/post/2bba80cf-a966-47dd-bd70-bacf9c91bc65/CF230510-940F-4F37-86CE-B5A83B109C41.png"
             />
-            <span>애견 마스터</span>
+            <span>{data.name}</span>
           </div>
-          <p>애견 그랜드 마스터 박지연님의 강아지입니다.</p>
+          <p>{data.creator_description}</p>
         </CreatorProfile>
         <div className="midLine"></div>
         <CreatorStauts>
