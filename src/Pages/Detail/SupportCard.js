@@ -65,7 +65,7 @@ const SupportCard = ({ data }) => {
                   <BtnList>
                     <li>
                       <button value={5000} onClick={e => selectPlusSupport(e)}>
-                        + 5천 원
+                        + 5천 원
                       </button>
                     </li>
                     <li>

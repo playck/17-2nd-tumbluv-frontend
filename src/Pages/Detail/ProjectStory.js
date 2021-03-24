@@ -16,6 +16,18 @@ const StoryContent = styled.div`
     width: 300px;
     height: 300px;
   }
+
+  h1 {
+    margin-bottom: 20px;
+    font-size: 32px;
+    text-align: center;
+  }
+
+  div {
+    margin: 20px 0;
+    padding: 0 15px;
+    line-height: 25px;
+  }
 `;
 
 export default ProjectStory;

@@ -4,8 +4,8 @@ import theme from '../../Styles/theme';
 import InputText from '../SignUp/Components/InputText';
 import Button from '../SignUp/Components/Button';
 import { Main, Card, Title, FormGroup, Footer } from '../SignUp/SignUp';
-import { kakaoAPI } from '../../Config';
-import { loginAPI } from '../../Config';
+import { kakaoAPI } from '../../config';
+import { loginAPI } from '../../config';
 import loginData from './LoginData';
 export default function Login({ history }) {
   const [inputs, setInputs] = useState({

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { emptyHeart } from '../../../Config';
-import { fullHeart } from '../../../Config';
+import { emptyHeart } from '../../../config';
+import { fullHeart } from '../../../config';
 
 export default function ProjectCard({
   id,

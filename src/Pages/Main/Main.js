@@ -5,8 +5,8 @@ import FilterDropdown from './Components/FilterDropdown';
 import ProjectCard from './Components/ProjectCard';
 import { FilterBtnData } from './Components/FilterBtnData';
 import { sortData } from './Components/FilterBtnData';
-import { arrowIcon } from '../../Config';
-import { mainListAPI } from '../../Config';
+import { arrowIcon } from '../../config';
+import { mainListAPI } from '../../config';
 
 export default function Main({ history }) {
   const [menuIdx, setMenuIdx] = useState(-1);
@@ -94,7 +94,6 @@ export default function Main({ history }) {
     if (modifier === 'last') {
       alert('더이상 데이터가 없습니다.');
     } else if (modifier === 'inf') {
-      console.log('inf');
       fetch(
         `${mainListAPI}${window.location.search}&offset=${currentItemIdx}&limit=${limit}`,
       )
@@ -106,7 +105,6 @@ export default function Main({ history }) {
           }));
         });
     } else if (modifier === 'query') {
-      console.log('query');
       fetch(`${mainListAPI}${window.location.search}&offset=0&limit=${limit}`)
         .then(res => res.json())
         .then(res => {
@@ -115,8 +113,7 @@ export default function Main({ history }) {
             results: [...res.results],
           });
         });
-    } else if (modifier === 'lastOffset') {
-      console.log('lastoffset');
+    } else {
       fetch(
         `${mainListAPI}${
           window.location.search
@@ -133,10 +130,6 @@ export default function Main({ history }) {
         });
     }
   };
-  console.log(
-    `${mainListAPI}${window.location.search}&offset=${currentItemIdx}&limit=${currentLimit}`,
-  );
-  console.log(projectData);
   useEffect(() => {
     getProjectData('query');
   }, [window.location.search]);
@@ -256,7 +249,6 @@ const Filterbar = styled.div`
   margin-top: 66px;
   height: 54px;
   background-color: white;
-  /* box-shadow: 0 6px 6px -4px lightgray; */
   border-bottom: 1px solid rgb(230, 230, 230);
 `;
 
