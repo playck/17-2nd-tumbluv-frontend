@@ -5,6 +5,8 @@ import ProjectSupport from './ProjectSupport';
 import SupportCard from './SupportCard';
 import styled from 'styled-components';
 import ProjectCommunity from './ProjectCommunity';
+import { useParams } from 'react-router';
+import { detailAPI } from '../../config';
 import axios from 'axios';
 
 const Detail = () => {
@@ -19,10 +21,11 @@ const Detail = () => {
   const onMenuTabmove = id => {
     setCurrentMenuId(id);
   };
-
+  const params = useParams();
   const getProjectData = () => {
-    axios.get('http://10.58.3.214:8000/project/tech1').then(function (res) {
+    axios.get(`${detailAPI}/${params.id}`).then(function (res) {
       setProjectData(res.data);
+      console.log(res);
     });
   };
 

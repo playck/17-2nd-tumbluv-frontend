@@ -5,11 +5,11 @@ import InputText from './Components/InputText';
 import InputCheck from './Components/InputCheck';
 import Button from './Components/Button';
 import signupData from './SignUpData';
-import { kakaoAPI } from '../../Config';
-import { emailSendAPI } from '../../Config';
-import { authNumAPI } from '../../Config';
-import { signinAPI } from '../../Config';
-import { kakaoIcon } from '../../Config';
+import { kakaoAPI } from '../../config';
+import { emailSendAPI } from '../../config';
+import { authNumAPI } from '../../config';
+import { signinAPI } from '../../config';
+import { kakaoIcon } from '../../config';
 
 const reg = {
   name: /^.{3,20}$/,
@@ -173,7 +173,7 @@ export default function SignUp({ history }) {
           .then(res => {
             console.log(res);
             alert('카카오 로그인 완료!');
-            localStorage.setItem('access_token', res.token);
+            localStorage.setItem('access_token', res.access_token);
             history.push('/');
           });
       },

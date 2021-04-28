@@ -42,7 +42,9 @@ const ProjectInfo = ({ data }) => {
                 <div className="supportValue">
                   <div>후원자</div>
                   <div className="statusValue">
-                    <span>{data.total_supporters.toLocaleString() || 0}</span>
+                    <span>
+                      {Number(data.total_supporters).toLocaleString() || 0}
+                    </span>
                     <span>명</span>
                   </div>
                 </div>

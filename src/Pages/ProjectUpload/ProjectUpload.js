@@ -5,6 +5,7 @@ import UploadForm from './UploadForm/UploadForm';
 import FormMenu from './FormMenu';
 import { FaEye } from 'react-icons/fa';
 import { FaBullhorn } from 'react-icons/fa';
+import { address } from '../../config';
 
 const ProjectUpload = ({ history }) => {
   const [imageValue, setimageValue] = useState('');
@@ -24,18 +25,17 @@ const ProjectUpload = ({ history }) => {
     const formData = new FormData();
     formData.append('filename', imageValue);
 
-    return axios
-      .post('http://172.20.10.5:8000/project/file', formData)
-      .then(res => {
-        console.log(res);
-        setImgUrlValue(res.data.thumbnail_url);
-      });
+    return axios.post(`${address}project/file`, formData).then(res => {
+      console.log(res);
+      setImgUrlValue(res.data.thumbnail_url);
+      alert('사진');
+    });
   };
 
   const onSendAllData = () => {
     axios({
       method: 'post',
-      url: 'http://172.20.10.5:8000/project/register',
+      url: `${address}project/register`,
       headers: {
         Authorization: localStorage.getItem('access_token'),
       },
@@ -60,6 +60,7 @@ const ProjectUpload = ({ history }) => {
 
   const addImgFile = e => {
     setimageValue(e.target.files[0]);
+    alert('사진이 업로드 되었습니다.');
   };
 
   useEffect(() => {
