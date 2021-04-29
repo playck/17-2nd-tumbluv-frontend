@@ -24,3 +24,9 @@ export const emptyHeart =
 
 export const fullHeart =
   'https://tumblbug.com/wpa/730f4f57f22fa624ea87b013550472b8.png';
+
+export const greyCircle =
+  'https://media.vlpt.us/images/playck/post/2bba80cf-a966-47dd-bd70-bacf9c91bc65/CF230510-940F-4F37-86CE-B5A83B109C41.png';
+
+export const blueCircle =
+  'https://media.vlpt.us/images/playck/post/d09d60c6-210b-4092-a2df-f727d0b30354/7BC376DA-2AEA-4C71-923D-6307C137DD1E.png';

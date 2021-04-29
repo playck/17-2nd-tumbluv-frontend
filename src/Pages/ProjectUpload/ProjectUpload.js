@@ -6,8 +6,10 @@ import FormMenu from './FormMenu';
 import { FaEye } from 'react-icons/fa';
 import { FaBullhorn } from 'react-icons/fa';
 import { address } from '../../config';
+import { greyCircle } from '../../config';
+import { blueCircle } from '../../config';
 
-const ProjectUpload = ({ history }) => {
+const ProjectUpload = () => {
   const [imageValue, setimageValue] = useState('');
   const [textValue, setTextValue] = useState('');
   const [presentValue, setPresentValue] = useState('');
@@ -26,9 +28,8 @@ const ProjectUpload = ({ history }) => {
     formData.append('filename', imageValue);
 
     return axios.post(`${address}project/file`, formData).then(res => {
-      console.log(res);
       setImgUrlValue(res.data.thumbnail_url);
-      alert('사진');
+      alert('사진이 업로드 되었습니다.');
     });
   };
 
@@ -53,22 +54,12 @@ const ProjectUpload = ({ history }) => {
         story: textValue[0].story,
         total_amount: 0,
       },
-    }).then(res => {
-      console.log(res);
     });
   };
 
   const addImgFile = e => {
     setimageValue(e.target.files[0]);
-    alert('사진이 업로드 되었습니다.');
   };
-
-  useEffect(() => {
-    if (!localStorage.getItem('access_token')) {
-      alert('로그인이 필요합니다.');
-      history.push('/login');
-    }
-  }, []);
 
   return (
     <>
@@ -83,15 +74,9 @@ const ProjectUpload = ({ history }) => {
         </ProjectTitle>
         <UploadInfo>
           프로젝트를 개설하려면 세 개의 섹션을 완성해야 합니다. 완성된 섹션은
-          <img
-            alt="회색원"
-            src="https://media.vlpt.us/images/playck/post/2bba80cf-a966-47dd-bd70-bacf9c91bc65/CF230510-940F-4F37-86CE-B5A83B109C41.png"
-          />
+          <img alt="회색원" src={greyCircle} />
           탭 아이콘에
-          <img
-            alt="파랑원"
-            src="https://media.vlpt.us/images/playck/post/d09d60c6-210b-4092-a2df-f727d0b30354/7BC376DA-2AEA-4C71-923D-6307C137DD1E.png"
-          />
+          <img alt="파랑원" src={blueCircle} />
           파랑게 불이 들어옵니다.
         </UploadInfo>
         <UPloadMenu>
