@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import FormInputList from './FormInputList';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
 import { FaCube } from 'react-icons/fa';
 
 const UploadForm = ({
@@ -14,11 +15,19 @@ const UploadForm = ({
   const [presentList, setPresentList] = useState([]);
   const [present, setPresent] = useState([]);
 
+  const { register, handleSubmit } = useForm();
+  const onSubmit = data => {
+    console.log(data);
+  };
+
   const onTextAdd = () => {
     const inputTextValue = [text];
     const inputPresentList = [presentList];
     onhandleTextData(inputTextValue);
     onhandlePresentData(inputPresentList);
+
+    const inputImgValue = [img];
+    onSendImgData(inputImgValue);
   };
 
   const onImgAdd = () => {
@@ -52,95 +61,58 @@ const UploadForm = ({
   };
 
   return (
-    <>
-      <Form>
-        {FormInputList.map(category => {
-          return (
-            <FormList key={category.id}>
-              <div>
-                <FormTitle>{category.FormTitle}</FormTitle>
-                <button onClick={() => onTextAdd()}>저장</button>
+    <Form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormTitle>
+          <div>프로젝트 개요</div>
+          <button onClick={() => onTextAdd()}> 저장 </button>
+        </FormTitle>
+        <FormList>
+          {FormInputList.map(category => {
+            return (
+              <div className="inputContent">
+                <p>
+                  <FaCube size="14" /> &nbsp;&nbsp;
+                  {category.FormInput}
+                </p>
+
+                {category.type === 'radio' ? (
+                  <div className="radioOpiotns">
+                    <input
+                      type="radio"
+                      name="category"
+                      value="푸드"
+                      ref={register}
+                    />
+                    푸드
+                    <input
+                      type="radio"
+                      name="category"
+                      value="패션"
+                      ref={register}
+                    />
+                    패션
+                    <input
+                      type="radio"
+                      name="category"
+                      value="사진"
+                      ref={register}
+                    />
+                    사진
+                  </div>
+                ) : (
+                  <input
+                    name={category.name}
+                    type={category.type}
+                    ref={register}
+                  />
+                )}
               </div>
-              <FormBody>
-                {category.item.map(list => {
-                  return (
-                    <div className="formContent" key={list.id}>
-                      <div className="inputContent">
-                        <p>
-                          <FaCube size="14" />
-                          &nbsp;&nbsp;
-                          {list.FormInput}
-                        </p>
-                        <span className="uploadImgBtn">
-                          {list.type === 'file' && (
-                            <button onClick={() => onImgAdd()}>
-                              사진 업로드하기
-                            </button>
-                          )}
-                        </span>
-                      </div>
-                      {list.FormTitle === '선물 추가하기' ? (
-                        <form onSubmit={onPresentAdd}>
-                          <div>
-                            <button className="presentAddBtn" type="submit">
-                              추가
-                            </button>
-                          </div>
-                          <input
-                            type="text"
-                            name="gift_name"
-                            onChange={onInputPresentChange}
-                            placeholder="선물 이름"
-                            autoComplete="off"
-                          />
-                          <input
-                            type="number"
-                            name="gift_price"
-                            onChange={onInputPresentChange}
-                            placeholder="선물 가격"
-                            autoComplete="off"
-                          />
-                          <input
-                            type="number"
-                            name="gift_stock"
-                            onChange={onInputPresentChange}
-                            placeholder="선물 갯수"
-                            autoComplete="off"
-                          />
-                        </form>
-                      ) : list.FormTitle === '프로젝트 대표 이미지' ? (
-                        <input
-                          className="imgUploadInput"
-                          type={list.type}
-                          onChange={addImgFile}
-                          name={list.name}
-                          autoComplete="off"
-                        />
-                      ) : list.type === 'date' ? (
-                        <input
-                          className="dateInput"
-                          type={list.type}
-                          onChange={onInputValueChange}
-                          name={list.name}
-                          autoComplete="off"
-                        />
-                      ) : (
-                        <input
-                          type={list.type}
-                          onChange={onInputValueChange}
-                          name={list.name}
-                          autoComplete="off"
-                        />
-                      )}
-                    </div>
-                  );
-                })}
-              </FormBody>
-            </FormList>
-          );
-        })}
-      </Form>
-    </>
+            );
+          })}
+        </FormList>
+      </form>
+    </Form>
   );
 };
 
@@ -150,92 +122,65 @@ const Form = styled.section`
 `;
 
 const FormTitle = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-  font-size: 14px;
-`;
-
-const FormList = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 1000px;
-  margin: 14px auto;
+  margin: 0 auto;
+  font-size: 15px;
 
-  div {
-    display: flex;
-
-    button {
-      width: 100px;
-      height: 30px;
-    }
+  button {
+    width: 60px;
+    height: 30px;
   }
 `;
 
-const FormBody = styled.li`
-  margin-bottom: 30px;
+const FormList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  margin: 14px auto;
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 5px;
-  .formContent {
-    display: flex;
-    flex-direction: column;
-    padding: 14px 21px;
+
+  .inputContent {
+    width: 1000px;
+    height: 115px;
+    padding: 15px 10px;
+    font-size: 15px;
+    color: ${props => props.theme.fontPointColor};
     border-bottom: 1px solid lightgray;
-    label {
-      padding: 7px 14px;
-      font-size: 14px;
+
+    p {
+      padding: 15px 0 0 10px;
+      font-size: 15px;
+      color: ${props => props.theme.fontPointColor};
     }
-    .inputContent {
+
+    .radioOpiotns {
       display: flex;
-      align-items: center;
-      height: 35px;
-      p {
-        width: 840px;
-        padding: 15px 10px;
-        font-size: 15px;
-        color: ${props => props.theme.fontPointColor};
-      }
+      padding: 25px 0 0 15px;
 
-      span {
-        font-size: 15px;
-        color: ${props => props.theme.fontPointColor};
-        cursor: pointer;
-      }
-    }
-    input {
-      width: 930px;
-      margin-left: 10px;
-      padding: 15px 0;
-      padding-left: 15px;
-      border: none;
-      border-bottom: 1px solid black;
-    }
-
-    .uploadImgBtn {
-      margin-top: 80px;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    .imgUploadInput {
-      width: 820px;
-    }
-
-    .dateInput {
-      width: 300px;
-    }
-
-    form {
       input {
-        width: 300px;
+        width: 20px;
       }
-      div {
-        background-color: white;
-        .presentAddBtn {
-          width: 90px;
-          margin-left: 840px;
-          background-color: rgb(235, 235, 235);
-          border-radius: 5px;
-        }
-      }
+    }
+  }
+
+  input {
+    width: 930px;
+    margin-left: 10px;
+    padding: 15px 0;
+    padding-left: 15px;
+    border: none;
+    border-bottom: 1px solid black;
+  }
+
+  div {
+    button {
+      width: 100px;
+      height: 30px;
     }
   }
 `;
