@@ -60,6 +60,7 @@ const UploadForm = ({
     });
   };
 
+  console.log(FormInputList[0].present[0].list);
   return (
     <Form>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,7 +69,7 @@ const UploadForm = ({
           <button onClick={() => onTextAdd()}> 저장 </button>
         </FormTitle>
         <FormList>
-          {FormInputList.map(category => {
+          {FormInputList[0].summary.map(category => {
             return (
               <div className="inputContent">
                 <p>
@@ -111,6 +112,61 @@ const UploadForm = ({
             );
           })}
         </FormList>
+
+        <FormTitle>
+          <div>펀딩 목표 및 구성</div>
+          <button onClick={() => onTextAdd()}> 저장 </button>
+        </FormTitle>
+        <FormList>
+          {FormInputList[0].goal.map(category => {
+            return (
+              <div className="inputContent">
+                <p>
+                  <FaCube size="14" /> &nbsp;&nbsp;
+                  {category.FormInput}
+                </p>
+                <input
+                  className="fundingGoal"
+                  name={category.name}
+                  type={category.type}
+                  ref={register}
+                />
+              </div>
+            );
+          })}
+        </FormList>
+
+        <FormTitle>
+          <div>선물 구성</div>
+          <button onClick={() => onTextAdd()}> 저장 </button>
+        </FormTitle>
+        <FormList>
+          {FormInputList[0].present.map(category => {
+            return (
+              <div className="inputContent">
+                <p>
+                  <FaCube size="14" /> &nbsp;&nbsp;
+                  {category.FormInput}
+                </p>
+                <div className="presentInfo">
+                  {FormInputList[0].present[0].list.map(gift => {
+                    return (
+                      <div className="giftInputBox">
+                        <span>{gift.text}</span>
+                        <input
+                          className="gift"
+                          name={gift.name}
+                          type={gift.type}
+                          ref={register}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </FormList>
       </form>
     </Form>
   );
@@ -140,13 +196,13 @@ const FormList = styled.div`
   flex-direction: column;
   width: 1000px;
   margin: 14px auto;
+  margin-bottom: 20px;
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 5px;
 
   .inputContent {
     width: 1000px;
-    height: 115px;
     padding: 15px 10px;
     font-size: 15px;
     color: ${props => props.theme.fontPointColor};
@@ -182,6 +238,38 @@ const FormList = styled.div`
       width: 100px;
       height: 30px;
     }
+  }
+
+  .fundingGoal {
+    width: 300px;
+    margin: 10px 0 0 10px;
+    padding: 10px 15px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+  }
+
+  .presentInfo {
+    display: flex;
+    margin-top: 10px;
+
+    .giftInputBox {
+      display: flex;
+      flex-direction: column;
+      margin: 10px;
+
+      span {
+        margin: 0 0 10px 5px;
+        color: black;
+      }
+    }
+  }
+
+  .gift {
+    width: 300px;
+    margin: 0;
+    padding: 10px 15px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
   }
 `;
 
