@@ -8,7 +8,6 @@ const UploadForm = ({
   onSendImgData,
   onhandleTextData,
   onhandlePresentData,
-  addImgFile,
 }) => {
   const [text, setText] = useState({});
   const [img, setImg] = useState('');
@@ -16,39 +15,22 @@ const UploadForm = ({
   const [present, setPresent] = useState([]);
 
   const { register, handleSubmit } = useForm();
+
   const onSubmit = data => {
-    console.log(data);
+    setText({ data });
+    setImg(data.thumbnailUrl);
+    const inputImgValue = [img];
+    onSendImgData(inputImgValue[0]);
   };
 
   const onTextAdd = () => {
-    const inputTextValue = [text];
     const inputPresentList = [presentList];
-    onhandleTextData(inputTextValue);
+    onhandleTextData(text);
     onhandlePresentData(inputPresentList);
-
-    const inputImgValue = [img];
-    onSendImgData(inputImgValue);
-  };
-
-  const onImgAdd = () => {
-    const inputImgValue = [img];
-    onSendImgData(inputImgValue);
   };
 
   const onPresentAdd = e => {
-    e.preventDefault();
     setPresentList([...presentList, present]);
-  };
-
-  const onInputValueChange = e => {
-    const { name, value } = e.target;
-    setText({
-      ...text,
-      [name]: value,
-    });
-    setImg({
-      [name]: value,
-    });
   };
 
   const onInputPresentChange = e => {
@@ -56,11 +38,9 @@ const UploadForm = ({
     setPresent({
       ...present,
       [name]: value,
-      quantity_sold: 0,
     });
   };
 
-  console.log(FormInputList[0].present[0].list);
   return (
     <Form>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -147,6 +127,13 @@ const UploadForm = ({
                 <p>
                   <FaCube size="14" /> &nbsp;&nbsp;
                   {category.FormInput}
+                  <button
+                    className="presentAddBtn"
+                    type="button"
+                    onClick={onPresentAdd}
+                  >
+                    추가
+                  </button>
                 </p>
                 <div className="presentInfo">
                   {FormInputList[0].present[0].list.map(gift => {
@@ -157,7 +144,7 @@ const UploadForm = ({
                           className="gift"
                           name={gift.name}
                           type={gift.type}
-                          ref={register}
+                          onChange={onInputPresentChange}
                         />
                       </div>
                     );
@@ -212,6 +199,14 @@ const FormList = styled.div`
       padding: 15px 0 0 10px;
       font-size: 15px;
       color: ${props => props.theme.fontPointColor};
+
+      .presentAddBtn {
+        float: right;
+        margin-right: 30px;
+        width: 90px;
+        background-color: rgb(235, 235, 235);
+        border-radius: 5px;
+      }
     }
 
     .radioOpiotns {
@@ -242,7 +237,7 @@ const FormList = styled.div`
 
   .fundingGoal {
     width: 300px;
-    margin: 10px 0 0 10px;
+    margin: 15px 0 0 10px;
     padding: 10px 15px;
     border: 1px solid lightgray;
     border-radius: 5px;

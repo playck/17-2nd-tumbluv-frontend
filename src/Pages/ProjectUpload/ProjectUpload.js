@@ -10,22 +10,22 @@ import { greyCircle } from '../../config';
 import { blueCircle } from '../../config';
 
 const ProjectUpload = () => {
-  const [imageValue, setimageValue] = useState('');
   const [textValue, setTextValue] = useState('');
   const [presentValue, setPresentValue] = useState('');
   const [imgurlValue, setImgUrlValue] = useState('');
 
   const onhandleTextData = value => {
     setTextValue(value);
+    console.log('최종텍스트', textValue);
   };
 
   const onhandlePresentData = value => {
     setPresentValue(value);
   };
 
-  const onSendImgData = () => {
+  const onSendImgData = img => {
     const formData = new FormData();
-    formData.append('filename', imageValue);
+    formData.append('filename', img);
 
     return axios.post(`${address}project/file`, formData).then(res => {
       setImgUrlValue(res.data.thumbnail_url);
@@ -55,10 +55,6 @@ const ProjectUpload = () => {
         total_amount: 0,
       },
     });
-  };
-
-  const addImgFile = e => {
-    setimageValue(e.target.files[0]);
   };
 
   return (
@@ -110,7 +106,6 @@ const ProjectUpload = () => {
         onhandleTextData={onhandleTextData}
         onhandlePresentData={onhandlePresentData}
         onSendImgData={onSendImgData}
-        addImgFile={addImgFile}
       />
     </>
   );
