@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormInputList from './FormInputList';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -17,7 +17,7 @@ const UploadForm = ({
   const { register, handleSubmit } = useForm();
 
   const onSubmit = data => {
-    setText({ data });
+    setText(data);
     setImg(data.thumbnailUrl);
 
     if (data.openingDate > data.closingDate) {
