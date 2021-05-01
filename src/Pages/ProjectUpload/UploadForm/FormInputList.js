@@ -44,6 +44,7 @@ const FormInputList = [
         FormInput: '목표 금액을 입력해 주세요',
         name: 'goalAmount',
         type: 'number',
+        min: 0,
       },
       {
         id: 2,
@@ -74,12 +75,14 @@ const FormInputList = [
             text: '선물 가격',
             name: 'giftPrice',
             type: 'number',
+            min: 10,
           },
           {
             id: 3,
             text: '선물 갯수',
             name: 'giftStock',
             type: 'number',
+            min: 1,
           },
         ],
       },

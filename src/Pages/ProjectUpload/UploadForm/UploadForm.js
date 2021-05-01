@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FormInputList from './FormInputList';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -19,6 +19,10 @@ const UploadForm = ({
   const onSubmit = data => {
     setText({ data });
     setImg(data.thumbnailUrl);
+
+    if (data.openingDate > data.closingDate) {
+      alert('프로젝트 마감날짜가 공개일시보다 빠릅니다');
+    }
   };
 
   const onDataAdd = () => {
@@ -69,6 +73,7 @@ const UploadForm = ({
                       name="category"
                       value="푸드"
                       ref={register}
+                      checked
                     />
                     푸드
                     <input
@@ -91,6 +96,7 @@ const UploadForm = ({
                     name={category.name}
                     type={category.type}
                     ref={register}
+                    required
                   />
                 )}
               </div>
@@ -114,7 +120,9 @@ const UploadForm = ({
                   className="fundingGoal"
                   name={category.name}
                   type={category.type}
+                  min={category.min}
                   ref={register}
+                  required
                 />
               </div>
             );
@@ -150,6 +158,8 @@ const UploadForm = ({
                           name={gift.name}
                           type={gift.type}
                           onChange={onInputPresentChange}
+                          min={gift.min}
+                          required
                         />
                       </div>
                     );

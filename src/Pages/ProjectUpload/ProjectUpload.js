@@ -23,15 +23,13 @@ const ProjectUpload = () => {
   };
 
   const onSendImgData = img => {
-    if (img.length > 0) {
-      const formData = new FormData();
-      formData.append('filename', img);
+    const formData = new FormData();
+    formData.append('filename', img);
 
-      return axios.post(`${address}project/file`, formData).then(res => {
-        setImgUrlValue(res.data.thumbnail_url);
-        alert('사진이 업로드 되었습니다.');
-      });
-    }
+    return axios.post(`${address}project/file`, formData).then(res => {
+      setImgUrlValue(res.data.thumbnail_url);
+      alert('사진이 업로드 되었습니다.');
+    });
   };
 
   const onSendAllData = () => {
@@ -57,6 +55,8 @@ const ProjectUpload = () => {
       },
     });
   };
+
+  console.log(textValue);
 
   return (
     <>
