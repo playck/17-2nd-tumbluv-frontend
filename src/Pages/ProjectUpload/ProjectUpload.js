@@ -16,7 +16,6 @@ const ProjectUpload = () => {
 
   const onhandleTextData = value => {
     setTextValue(value);
-    console.log('최종텍스트', textValue);
   };
 
   const onhandlePresentData = value => {
@@ -24,13 +23,15 @@ const ProjectUpload = () => {
   };
 
   const onSendImgData = img => {
-    const formData = new FormData();
-    formData.append('filename', img);
+    if (img.length > 0) {
+      const formData = new FormData();
+      formData.append('filename', img);
 
-    return axios.post(`${address}project/file`, formData).then(res => {
-      setImgUrlValue(res.data.thumbnail_url);
-      alert('사진이 업로드 되었습니다.');
-    });
+      return axios.post(`${address}project/file`, formData).then(res => {
+        setImgUrlValue(res.data.thumbnail_url);
+        alert('사진이 업로드 되었습니다.');
+      });
+    }
   };
 
   const onSendAllData = () => {

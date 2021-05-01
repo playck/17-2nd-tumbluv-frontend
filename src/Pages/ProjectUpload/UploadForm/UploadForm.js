@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormInputList from './FormInputList';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -19,17 +19,18 @@ const UploadForm = ({
   const onSubmit = data => {
     setText({ data });
     setImg(data.thumbnailUrl);
-    const inputImgValue = [img];
-    onSendImgData(inputImgValue[0]);
   };
 
-  const onTextAdd = () => {
+  const onDataAdd = () => {
+    const inputImgValue = [img];
     const inputPresentList = [presentList];
+
     onhandleTextData(text);
+    onSendImgData(inputImgValue[0]);
     onhandlePresentData(inputPresentList);
   };
 
-  const onPresentAdd = e => {
+  const onPresentAdd = () => {
     setPresentList([...presentList, present]);
   };
 
@@ -41,12 +42,16 @@ const UploadForm = ({
     });
   };
 
+  useEffect(() => {
+    onDataAdd();
+  }, [text]);
+
   return (
     <Form>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>
           <div>프로젝트 개요</div>
-          <button onClick={() => onTextAdd()}> 저장 </button>
+          <button onClick={() => onDataAdd()}> 저장 </button>
         </FormTitle>
         <FormList>
           {FormInputList[0].summary.map(category => {
@@ -95,7 +100,7 @@ const UploadForm = ({
 
         <FormTitle>
           <div>펀딩 목표 및 구성</div>
-          <button onClick={() => onTextAdd()}> 저장 </button>
+          <button onClick={() => onDataAdd()}> 저장 </button>
         </FormTitle>
         <FormList>
           {FormInputList[0].goal.map(category => {
@@ -118,7 +123,7 @@ const UploadForm = ({
 
         <FormTitle>
           <div>선물 구성</div>
-          <button onClick={() => onTextAdd()}> 저장 </button>
+          <button onClick={() => onDataAdd()}> 저장 </button>
         </FormTitle>
         <FormList>
           {FormInputList[0].present.map(category => {
