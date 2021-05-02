@@ -1,45 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormInputList from './FormInputList';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
 import { FaCube } from 'react-icons/fa';
 
 const UploadForm = ({
   onSendImgData,
   onhandleTextData,
   onhandlePresentData,
-  addImgFile,
 }) => {
   const [text, setText] = useState({});
   const [img, setImg] = useState('');
   const [presentList, setPresentList] = useState([]);
   const [present, setPresent] = useState([]);
 
-  const onTextAdd = () => {
-    const inputTextValue = [text];
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = data => {
+    setText(data);
+    setImg(data.thumbnailUrl);
+
+    if (data.openingDate > data.closingDate) {
+      alert('프로젝트 마감날짜가 공개일시보다 빠릅니다');
+    }
+  };
+
+  const onDataAdd = () => {
+    const inputImgValue = [img];
     const inputPresentList = [presentList];
-    onhandleTextData(inputTextValue);
+
+    onhandleTextData(text);
+    onSendImgData(inputImgValue[0]);
     onhandlePresentData(inputPresentList);
   };
 
-  const onImgAdd = () => {
-    const inputImgValue = [img];
-    onSendImgData(inputImgValue);
-  };
-
-  const onPresentAdd = e => {
-    e.preventDefault();
+  const onPresentAdd = () => {
     setPresentList([...presentList, present]);
-  };
-
-  const onInputValueChange = e => {
-    const { name, value } = e.target;
-    setText({
-      ...text,
-      [name]: value,
-    });
-    setImg({
-      [name]: value,
-    });
   };
 
   const onInputPresentChange = e => {
@@ -47,100 +43,134 @@ const UploadForm = ({
     setPresent({
       ...present,
       [name]: value,
-      quantity_sold: 0,
     });
   };
 
+  useEffect(() => {
+    onDataAdd();
+  }, [text]);
+
   return (
-    <>
-      <Form>
-        {FormInputList.map(category => {
-          return (
-            <FormList key={category.id}>
-              <div>
-                <FormTitle>{category.FormTitle}</FormTitle>
-                <button onClick={() => onTextAdd()}>저장</button>
+    <Form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormTitle>
+          <div>프로젝트 개요</div>
+          <button onClick={() => onDataAdd()}> 저장 </button>
+        </FormTitle>
+        <FormList>
+          {FormInputList[0].summary.map(category => {
+            return (
+              <div className="inputContent">
+                <p>
+                  <FaCube size="14" /> &nbsp;&nbsp;
+                  {category.FormInput}
+                </p>
+
+                {category.type === 'radio' ? (
+                  <div className="radioOpiotns">
+                    <input
+                      type="radio"
+                      name="category"
+                      value="푸드"
+                      ref={register}
+                      checked
+                    />
+                    푸드
+                    <input
+                      type="radio"
+                      name="category"
+                      value="패션"
+                      ref={register}
+                    />
+                    패션
+                    <input
+                      type="radio"
+                      name="category"
+                      value="사진"
+                      ref={register}
+                    />
+                    사진
+                  </div>
+                ) : (
+                  <input
+                    name={category.name}
+                    type={category.type}
+                    ref={register}
+                    required
+                  />
+                )}
               </div>
-              <FormBody>
-                {category.item.map(list => {
-                  return (
-                    <div className="formContent" key={list.id}>
-                      <div className="inputContent">
-                        <p>
-                          <FaCube size="14" />
-                          &nbsp;&nbsp;
-                          {list.FormInput}
-                        </p>
-                        <span className="uploadImgBtn">
-                          {list.type === 'file' && (
-                            <button onClick={() => onImgAdd()}>
-                              사진 업로드하기
-                            </button>
-                          )}
-                        </span>
+            );
+          })}
+        </FormList>
+
+        <FormTitle>
+          <div>펀딩 목표 및 구성</div>
+          <button onClick={() => onDataAdd()}> 저장 </button>
+        </FormTitle>
+        <FormList>
+          {FormInputList[0].goal.map(category => {
+            return (
+              <div className="inputContent">
+                <p>
+                  <FaCube size="14" /> &nbsp;&nbsp;
+                  {category.FormInput}
+                </p>
+                <input
+                  className="fundingGoal"
+                  name={category.name}
+                  type={category.type}
+                  min={category.min}
+                  ref={register}
+                  required
+                />
+              </div>
+            );
+          })}
+        </FormList>
+
+        <FormTitle>
+          <div>선물 구성</div>
+          <button onClick={() => onDataAdd()}> 저장 </button>
+        </FormTitle>
+        <FormList>
+          {FormInputList[0].present.map(category => {
+            return (
+              <div className="inputContent">
+                <p>
+                  <FaCube size="14" /> &nbsp;&nbsp;
+                  {category.FormInput}
+                  <button
+                    className="presentAddBtn"
+                    type="button"
+                    onClick={onPresentAdd}
+                  >
+                    추가
+                  </button>
+                </p>
+                <div className="presentInfo">
+                  {FormInputList[0].present[0].list.map(gift => {
+                    return (
+                      <div className="giftInputBox">
+                        <span>{gift.text}</span>
+                        <input
+                          className="gift"
+                          name={gift.name}
+                          type={gift.type}
+                          onChange={onInputPresentChange}
+                          min={gift.min}
+                          required
+                        />
                       </div>
-                      {list.FormTitle === '선물 추가하기' ? (
-                        <form onSubmit={onPresentAdd}>
-                          <div>
-                            <button className="presentAddBtn" type="submit">
-                              추가
-                            </button>
-                          </div>
-                          <input
-                            type="text"
-                            name="gift_name"
-                            onChange={onInputPresentChange}
-                            placeholder="선물 이름"
-                            autoComplete="off"
-                          />
-                          <input
-                            type="number"
-                            name="gift_price"
-                            onChange={onInputPresentChange}
-                            placeholder="선물 가격"
-                            autoComplete="off"
-                          />
-                          <input
-                            type="number"
-                            name="gift_stock"
-                            onChange={onInputPresentChange}
-                            placeholder="선물 갯수"
-                            autoComplete="off"
-                          />
-                        </form>
-                      ) : list.FormTitle === '프로젝트 대표 이미지' ? (
-                        <input
-                          className="imgUploadInput"
-                          type={list.type}
-                          onChange={addImgFile}
-                          name={list.name}
-                          autoComplete="off"
-                        />
-                      ) : list.type === 'date' ? (
-                        <input
-                          className="dateInput"
-                          type={list.type}
-                          onChange={onInputValueChange}
-                          name={list.name}
-                          autoComplete="off"
-                        />
-                      ) : (
-                        <input
-                          type={list.type}
-                          onChange={onInputValueChange}
-                          name={list.name}
-                          autoComplete="off"
-                        />
-                      )}
-                    </div>
-                  );
-                })}
-              </FormBody>
-            </FormList>
-          );
-        })}
-      </Form>
-    </>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </FormList>
+      </form>
+    </Form>
   );
 };
 
@@ -150,93 +180,106 @@ const Form = styled.section`
 `;
 
 const FormTitle = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1000px;
+  margin: 0 auto;
+  font-size: 15px;
+
+  button {
+    width: 60px;
+    height: 30px;
+  }
 `;
 
-const FormList = styled.ul`
+const FormList = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 1000px;
   margin: 14px auto;
+  margin-bottom: 20px;
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+
+  .inputContent {
+    width: 1000px;
+    padding: 15px 10px;
+    font-size: 15px;
+    color: ${props => props.theme.fontPointColor};
+    border-bottom: 1px solid lightgray;
+
+    p {
+      padding: 15px 0 0 10px;
+      font-size: 15px;
+      color: ${props => props.theme.fontPointColor};
+
+      .presentAddBtn {
+        float: right;
+        margin-right: 30px;
+        width: 90px;
+        background-color: rgb(235, 235, 235);
+        border-radius: 5px;
+      }
+    }
+
+    .radioOpiotns {
+      display: flex;
+      padding: 25px 0 0 15px;
+
+      input {
+        width: 20px;
+      }
+    }
+  }
+
+  input {
+    width: 930px;
+    margin-left: 10px;
+    padding: 15px 0;
+    padding-left: 15px;
+    border: none;
+    border-bottom: 1px solid black;
+  }
 
   div {
-    display: flex;
-
     button {
       width: 100px;
       height: 30px;
     }
   }
-`;
 
-const FormBody = styled.li`
-  margin-bottom: 30px;
-  background-color: white;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  .formContent {
+  .fundingGoal {
+    width: 300px;
+    margin: 15px 0 0 10px;
+    padding: 10px 15px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+  }
+
+  .presentInfo {
     display: flex;
-    flex-direction: column;
-    padding: 14px 21px;
-    border-bottom: 1px solid lightgray;
-    label {
-      padding: 7px 14px;
-      font-size: 14px;
-    }
-    .inputContent {
+    margin-top: 10px;
+
+    .giftInputBox {
       display: flex;
-      align-items: center;
-      height: 35px;
-      p {
-        width: 840px;
-        padding: 15px 10px;
-        font-size: 15px;
-        color: ${props => props.theme.fontPointColor};
-      }
+      flex-direction: column;
+      margin: 10px;
 
       span {
-        font-size: 15px;
-        color: ${props => props.theme.fontPointColor};
-        cursor: pointer;
+        margin: 0 0 10px 5px;
+        color: black;
       }
     }
-    input {
-      width: 930px;
-      margin-left: 10px;
-      padding: 15px 0;
-      padding-left: 15px;
-      border: none;
-      border-bottom: 1px solid black;
-    }
+  }
 
-    .uploadImgBtn {
-      margin-top: 80px;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    .imgUploadInput {
-      width: 820px;
-    }
-
-    .dateInput {
-      width: 300px;
-    }
-
-    form {
-      input {
-        width: 300px;
-      }
-      div {
-        background-color: white;
-        .presentAddBtn {
-          width: 90px;
-          margin-left: 840px;
-          background-color: rgb(235, 235, 235);
-          border-radius: 5px;
-        }
-      }
-    }
+  .gift {
+    width: 300px;
+    margin: 0;
+    padding: 10px 15px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
   }
 `;
 

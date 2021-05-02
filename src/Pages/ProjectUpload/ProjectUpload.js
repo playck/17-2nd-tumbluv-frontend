@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import UploadForm from './UploadForm/UploadForm';
@@ -10,7 +10,6 @@ import { greyCircle } from '../../config';
 import { blueCircle } from '../../config';
 
 const ProjectUpload = () => {
-  const [imageValue, setimageValue] = useState('');
   const [textValue, setTextValue] = useState('');
   const [presentValue, setPresentValue] = useState('');
   const [imgurlValue, setImgUrlValue] = useState('');
@@ -23,9 +22,9 @@ const ProjectUpload = () => {
     setPresentValue(value);
   };
 
-  const onSendImgData = () => {
+  const onSendImgData = img => {
     const formData = new FormData();
-    formData.append('filename', imageValue);
+    formData.append('filename', img);
 
     return axios.post(`${address}project/file`, formData).then(res => {
       setImgUrlValue(res.data.thumbnail_url);
@@ -41,24 +40,20 @@ const ProjectUpload = () => {
         Authorization: localStorage.getItem('access_token'),
       },
       data: {
-        summary: textValue[0].summary,
-        category: textValue[0].category,
-        goal_amount: textValue[0].goalAmount,
-        opening_date: textValue[0].openingDate,
-        closing_date: textValue[0].closingDate,
+        summary: textValue.summary,
+        category: textValue.category,
+        goal_amount: textValue.goalAmount,
+        opening_date: textValue.openingDate,
+        closing_date: textValue.closingDate,
         thumbnail_url: imgurlValue,
-        name: textValue[0].name,
-        project_uri: textValue[0].url,
+        name: textValue.name,
+        project_uri: textValue.url,
         gifts: presentValue[0],
         total_gifts: presentValue[0].length,
-        story: textValue[0].story,
+        story: textValue.story,
         total_amount: 0,
       },
     });
-  };
-
-  const addImgFile = e => {
-    setimageValue(e.target.files[0]);
   };
 
   return (
@@ -66,8 +61,8 @@ const ProjectUpload = () => {
       <UploadContainer>
         <ProjectTitle>
           <span>준비 중</span>
-          {textValue[0]?.name ? (
-            <div className="title">{textValue[0].name}</div>
+          {textValue?.name ? (
+            <div className="title">{textValue.name}</div>
           ) : (
             '귀여운 제목'
           )}
@@ -84,7 +79,13 @@ const ProjectUpload = () => {
             {FormMenu.map(menu => {
               return (
                 <li key={menu.id}>
-                  <img alt="회색원" src={menu.img} />
+                  {Object.keys(textValue).length !== 0 &&
+                  Object.keys(presentValue).length !== 0 &&
+                  imgurlValue ? (
+                    <img alt="파랑원" src={blueCircle} />
+                  ) : (
+                    <img alt="회색원" src={greyCircle} />
+                  )}
                   <span>{menu.title}</span>
                 </li>
               );
@@ -110,7 +111,6 @@ const ProjectUpload = () => {
         onhandleTextData={onhandleTextData}
         onhandlePresentData={onhandlePresentData}
         onSendImgData={onSendImgData}
-        addImgFile={addImgFile}
       />
     </>
   );
